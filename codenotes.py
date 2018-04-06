@@ -1,1 +1,4 @@
-from app import app # noqa
+from app import create_app
+
+
+app = create_app('development')
