@@ -15,9 +15,10 @@ def create_app(config_name):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from app.views import main as main_blueprint
+    from app.main.views import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    return app
+    from app.notes.views import notes as notes_blueprint
+    app.register_blueprint(notes_blueprint, url_prefix='/notes')
 
-from app import views, models # noqa
+    return app
