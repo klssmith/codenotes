@@ -4,7 +4,7 @@
 <h1>All Code Notes</h1>
   {% for note in notes %}
     <p>
-      {{ note.title }}
+      <a href="{{ url_for('notes.get_one_note', note_id=note.id) }}">{{ note.title }}</a>
     </p>
   {% endfor %}
 {% endblock %}
