@@ -1,3 +1,4 @@
 -r requirements.txt
 beautifulsoup4==4.6.0
 flake8==3.5.0
+pytest==3.5.1
