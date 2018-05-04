@@ -31,7 +31,7 @@ def test_get_one_note_displays_the_title_and_content(client, codenotes_db_sessio
     page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
 
     assert page.find('h1').string == 'Ruby Notes'
-    assert page.find('div').string.strip() == 'Some Ruby stuff'
+    assert page.find('div', class_='content').string.strip() == 'Some Ruby stuff'
 
 
 def test_get_one_note_with_an_invalid_uuid_returns_404(client, codenotes_db_session):
