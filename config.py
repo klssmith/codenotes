@@ -13,6 +13,7 @@ class DevelopmentConfig(Config):
 
 
 class TestConfig(Config):
+    WTF_CSRF_ENABLED = False
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_TEST_DATABASE_URI', 'postgresql://localhost/codenotes_test')
 
