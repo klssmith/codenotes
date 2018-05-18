@@ -1,5 +1,6 @@
 from app import db
 from app.models import Note
+from app.notes.errors import NoteNotFound
 
 
 def dao_get_note(note_id):
@@ -15,4 +16,14 @@ def dao_create_note(title, content):
 
     db.session.add(note)
     db.session.commit()
+    return note
+
+
+def dao_update_note(note):
+    if not note.id:
+        raise NoteNotFound('The Note you are trying to update does not exist')
+
+    db.session.add(note)
+    db.session.commit()
+
     return note
