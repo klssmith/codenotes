@@ -25,7 +25,10 @@ def create_a_note():
     form = NoteForm()
 
     if form.validate_on_submit():
-        note = dao_create_note(form.title.data, form.content.data)
+        title = form.title.data.strip()
+        content = form.content.data.strip()
+
+        note = dao_create_note(title, content)
         return redirect(url_for('notes.get_one_note', note_id=note.id))
 
     return render_template('notes/new_note.html', form=form)

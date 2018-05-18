@@ -51,6 +51,22 @@ def test_create_a_note_shows_new_note_page_with_valid_data(client, codenotes_db_
     assert page.find('div', class_='content').string.strip() == content
 
 
+def test_create_a_note_strips_whitespace(client, codenotes_db_session):
+    title = '         My title     '
+    content = '          My content         '
+
+    response = client.post(
+        url_for('notes.create_a_note'),
+        data={'title': title, 'content': content},
+        follow_redirects=True
+    )
+    page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
+
+    assert response.status_code == 200
+    assert page.find('h1').string == 'My title'
+    assert page.find('div', class_='content').string == '\nMy content\n'
+
+
 def test_create_a_note_does_not_redirect_if_data_is_invalid(client):
     title = 'A title that is too far over the one hundred and twenty character limit, and so will cause validation \
     on the title length to fail.'
