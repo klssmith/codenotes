@@ -1,6 +1,6 @@
 from .forms import NoteForm
 
-from flask import Blueprint, redirect, render_template, url_for
+from flask import Blueprint, flash, redirect, render_template, url_for
 
 from app.dao.note_dao import dao_create_note, dao_get_all_notes, dao_get_note
 
@@ -29,6 +29,7 @@ def create_a_note():
         content = form.content.data.strip()
 
         note = dao_create_note(title, content)
+        flash('Your note was created successfully', 'success')
         return redirect(url_for('notes.get_one_note', note_id=note.id))
 
     return render_template('notes/new_note.html', form=form)

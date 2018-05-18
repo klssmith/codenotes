@@ -49,6 +49,7 @@ def test_create_a_note_shows_new_note_page_with_valid_data(client, codenotes_db_
     assert response.status_code == 200
     assert page.find('h1').string == title
     assert page.find('div', class_='content').string.strip() == content
+    assert page.find('div', class_='alert alert-success').string.strip() == 'Your note was created successfully'
 
 
 def test_create_a_note_strips_whitespace(client, codenotes_db_session):
@@ -67,10 +68,10 @@ def test_create_a_note_strips_whitespace(client, codenotes_db_session):
     assert page.find('div', class_='content').string == '\nMy content\n'
 
 
-def test_create_a_note_does_not_redirect_if_data_is_invalid(client):
+def test_create_a_note_with_invalid_fields_shows_errors_and_does_not_redirect(client):
     title = 'A title that is too far over the one hundred and twenty character limit, and so will cause validation \
     on the title length to fail.'
-    content = 'My content'
+    content = ''
 
     response = client.post(
         url_for('notes.create_a_note'),
@@ -80,3 +81,4 @@ def test_create_a_note_does_not_redirect_if_data_is_invalid(client):
 
     assert response.status_code == 200
     assert page.find('h1').string == 'Create a new note'
+    assert len(page.find_all('div', class_='alert')) == 2

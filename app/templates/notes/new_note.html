@@ -5,10 +5,20 @@
   {{ form.csrf_token }}
   <div class="form-group">
     {{ form.title.label }}
+    {% if form.errors.get('title') %}
+      {% for error in form.errors.title %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
     {{ form.title(class_="form-control") }}
   </div>
   <div class="form-group">
     {{ form.content.label }}
+    {% if form.errors.get('content') %}
+      {% for error in form.errors.content %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
     {{ form.content(class_="form-control", rows="10") }}
   </div>
   <button type="submit" class="btn btn-lg btn-primary">Save</button>
