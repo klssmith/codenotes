@@ -2,7 +2,10 @@
 
 {% block content %}
 <h1>{{ note.title }}</h1>
-<div class='content'>
+<div class="content">
 {{ note.content }}
+</div>
+<div class="pt-4">
+  <a href="{{ url_for('notes.edit_note', note_id=note.id) }}" class="btn btn-lg btn-primary">Edit</a>
 </div>
 {% endblock %}

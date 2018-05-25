@@ -82,3 +82,38 @@ def test_create_a_note_with_invalid_fields_shows_errors_and_does_not_redirect(cl
     assert response.status_code == 200
     assert page.find('h1').string == 'Create a new note'
     assert len(page.find_all('div', class_='alert')) == 2
+
+
+def test_edit_note_shows_the_properties_of_the_current_note(client, note):
+    response = client.get(
+        url_for('notes.edit_note', note_id=note.id)
+    )
+    page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
+    assert page.find(id='title').get('value') == note.title
+    assert page.find(id='content').text == note.content
+
+
+def test_edit_note_updates_the_properties_of_a_note(client, note):
+    response = client.post(
+        url_for('notes.edit_note', note_id=note.id),
+        data={'title': 'New title', 'content': 'New content'},
+        follow_redirects=True
+    )
+    page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
+
+    assert response.status_code == 200
+    assert page.find('h1').string == 'New title'
+    assert page.find('div', class_='content').string.strip() == 'New content'
+    assert page.find('div', class_='alert alert-success').string.strip() == 'Your note was updated successfully'
+
+
+def test_edit_note_with_invalid_fields_shows_errors_and_does_not_redirect(client, note):
+    response = client.post(
+        url_for('notes.edit_note', note_id=note.id),
+        data={'title': '', 'content': ''},
+    )
+    page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
+
+    assert response.status_code == 200
+    assert page.find('h1').string == 'Edit {}'.format(note.title)
+    assert len(page.find_all('div', class_='alert')) == 2

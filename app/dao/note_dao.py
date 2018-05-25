@@ -16,3 +16,13 @@ def dao_create_note(title, content):
     db.session.add(note)
     db.session.commit()
     return note
+
+
+def dao_update_note(note_id, title, content):
+    note = Note.query.filter_by(
+        id=note_id
+    ).update(
+        {'title': title, 'content': content}
+    )
+    db.session.commit()
+    return note
